@@ -33,8 +33,10 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity {
 
     // TODO (1) Create a static final key to store the query's URL
+    public static final String URL = "url";
 
     // TODO (2) Create a static final key to store the search's raw JSON
+    public static final String RAW_JSON = "raw_json";
 
     private EditText mSearchBoxEditText;
 
@@ -58,6 +60,13 @@ public class MainActivity extends AppCompatActivity {
         mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+
+        if(savedInstanceState != null){
+            if(savedInstanceState.containsKey(URL) && savedInstanceState.containsKey(RAW_JSON)){
+                mUrlDisplayTextView.setText(savedInstanceState.getString(URL));
+                mSearchResultsTextView.setText(savedInstanceState.getString(RAW_JSON));
+            }
+        }
 
         // TODO (9) If the savedInstanceState bundle is not null, set the text of the URL and search results TextView respectively
     }
@@ -149,6 +158,13 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(URL, mUrlDisplayTextView.getText().toString());
+        outState.putString(RAW_JSON, mSearchResultsTextView.getText().toString());
     }
 
     // TODO (3) Override onSaveInstanceState to persist data across Activity recreation
